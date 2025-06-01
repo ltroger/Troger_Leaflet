@@ -1,10 +1,13 @@
+// View of the map set to the latitude and longitude of Salzburg with a zoom of 13
 const map = L.map('map').setView([47.8095, 13.0550], 13);
 
+// Map initialization from the leaflet website
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
     attribution: '&copy; OpenStreetMap contributors'
 }).addTo(map);
 
+// Defining the circle variable 
 var circle = L.circle([47.8095, 13.0550], {
     color: 'red',
     fillColor: '#f03',
@@ -12,8 +15,8 @@ var circle = L.circle([47.8095, 13.0550], {
     radius: 500
 });
 
-circle.bindPopup("Gaming.");
 
+// Overpass query for locations of charging stations
 const chargingQuery = `
 [out:json];
 area[name="Salzburg"]->.searchArea;
@@ -21,6 +24,7 @@ node["amenity"="charging_station"](area.searchArea);
 out center;
 `;
 
+// Name on mouse hover and other info on mouse click
 fetch('https://overpass-api.de/api/interpreter', {
     method: 'POST',
     body: chargingQuery,
@@ -55,7 +59,7 @@ fetch('https://overpass-api.de/api/interpreter', {
     });
 
 
-
+// Overpass query for locations of fuel stations
 const fuelQuery = `
 [out:json];
 area[name="Salzburg"]->.searchArea;
@@ -63,6 +67,7 @@ node["amenity"="fuel"](area.searchArea);
 out center;
 `;
 
+// Name on mouse hover and other info on mouse click
 fetch('https://overpass-api.de/api/interpreter', {
     method: 'POST',
     body: fuelQuery,
@@ -102,6 +107,7 @@ fetch('https://overpass-api.de/api/interpreter', {
 
 const legend = L.control({ position: 'bottomleft' });
 
+// Legend added to the bottom left
 legend.onAdd = function () {
     const div = L.DomUtil.create('div', 'info legend');
     div.innerHTML = `
