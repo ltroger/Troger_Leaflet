@@ -42,10 +42,10 @@ fetch('https://overpass-api.de/api/interpreter', {
             const socket = tags.socket_type || tags.socket || 'N/A';
 
             const marker = L.circle([latitude, longitude], {
-                color: 'blue',
-                fillColor: '#30f',
+                color: 'green',
+                fillColor: '#3f3',
                 fillOpacity: 0.5,
-                radius: 100
+                radius: 50
             }).addTo(map);
 
             marker.bindTooltip(name);
@@ -87,10 +87,10 @@ fetch('https://overpass-api.de/api/interpreter', {
             const fuel_gasoline = tags['fuel:gasoline'] ? 'Yes' : 'No';
 
             const marker = L.circle([latitude, longitude], {
-                color: 'green',
-                fillColor: '#3f3',
+                color: 'blue',
+                fillColor: '#30f',
                 fillOpacity: 0.5,
-                radius: 100
+                radius: 50
             }).addTo(map);
 
             marker.bindTooltip(name);
@@ -111,9 +111,9 @@ const legend = L.control({ position: 'bottomleft' });
 legend.onAdd = function () {
     const div = L.DomUtil.create('div', 'info legend');
     div.innerHTML = `
-    <h4>Legend</h4>
-    <i style="background:blue; width: 20px; height: 20px; display: inline-block;"></i><b> Charging stations</b><br>
-    <i style="background:green; width: 20px; height: 20px; display: inline-block;"></i><b> Fuel stations</b><br>
+    <h4>Charging stations vs gas stations</h4>
+    <i style="background:blue; width: 20px; height: 20px; display: inline-block;"></i><b> Gas stations</b><br>
+    <i style="background:green; width: 20px; height: 20px; display: inline-block;"></i><b> Charging stations</b><br>
   `;
     return div;
 };
