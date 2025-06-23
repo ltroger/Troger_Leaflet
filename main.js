@@ -123,6 +123,7 @@ legend.onAdd = function () {
 };
 
 legend.addTo(map);
+L.control.scale().addTo(map);
 
 map.whenReady(() => {
     const fuelCheckbox = document.getElementById('toggle-fuel');
