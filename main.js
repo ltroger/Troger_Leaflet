@@ -15,6 +15,8 @@ var circle = L.circle([47.8095, 13.0550], {
     radius: 500
 });
 
+const chargingLayer = L.layerGroup().addTo(map);
+const fuelLayer = L.layerGroup().addTo(map);
 
 // Overpass query for locations of charging stations
 const chargingQuery = `
@@ -46,7 +48,7 @@ fetch('https://overpass-api.de/api/interpreter', {
                 fillColor: '#3f3',
                 fillOpacity: 0.5,
                 radius: 50
-            }).addTo(map);
+            }).addTo(chargingLayer);
 
             marker.bindTooltip(name);
             marker.bindPopup(`
@@ -91,7 +93,7 @@ fetch('https://overpass-api.de/api/interpreter', {
                 fillColor: '#30f',
                 fillOpacity: 0.5,
                 radius: 50
-            }).addTo(map);
+            }).addTo(fuelLayer);
 
             marker.bindTooltip(name);
             marker.bindPopup(`
@@ -111,11 +113,37 @@ const legend = L.control({ position: 'bottomleft' });
 legend.onAdd = function () {
     const div = L.DomUtil.create('div', 'info legend');
     div.innerHTML = `
-    <h4>Charging stations vs gas stations</h4>
-    <i style="background:blue; width: 20px; height: 20px; display: inline-block;"></i><b> Gas stations</b><br>
-    <i style="background:green; width: 20px; height: 20px; display: inline-block;"></i><b> Charging stations</b><br>
-  `;
+        <h4>Charging stations vs gas stations</h4>
+        <input type="checkbox" id="toggle-fuel" checked>
+        <i style="background:blue; width: 20px; height: 20px; display: inline-block;"></i><b> Gas stations</b><br>
+        <input type="checkbox" id="toggle-charging" checked>
+        <i style="background:green; width: 20px; height: 20px; display: inline-block;"></i><b> Charging stations</b><br>
+    `;
     return div;
 };
 
 legend.addTo(map);
+
+map.whenReady(() => {
+    const fuelCheckbox = document.getElementById('toggle-fuel');
+    const chargingCheckbox = document.getElementById('toggle-charging');
+
+    if (fuelCheckbox) {
+        fuelCheckbox.addEventListener('change', function () {
+            if (this.checked) {
+                map.addLayer(fuelLayer);
+            } else {
+                map.removeLayer(fuelLayer);
+            }
+        });
+    }
+    if (chargingCheckbox) {
+        chargingCheckbox.addEventListener('change', function () {
+            if (this.checked) {
+                map.addLayer(chargingLayer);
+            } else {
+                map.removeLayer(chargingLayer);
+            }
+        });
+    }
+});
